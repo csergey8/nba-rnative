@@ -1,15 +1,13 @@
 import React, {Fragment, Component} from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { RootNavigator } from './routes'; 
 
 
 
-class App extends Component {
+class GamesComponent extends Component {
   render() {
-    const Nav = RootNavigator();
     return (
       <View style={styles.container}>
-        <Nav/>
+        <Text>hello games</Text>
       </View>
     )
   }
@@ -22,4 +20,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+//  
+export default GamesComponent;
