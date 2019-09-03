@@ -1,25 +1,55 @@
 import React, {Fragment, Component} from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, ScrollView, ActivityIndicator } from 'react-native';
 
 
+import AuthLogo from './authLogo';
+import AuthForm from './authForm';
 
 class AuthComponent extends Component {
+  state = {
+    loading: false
+  }
+
+  goNext = () => {
+    this.props.navigation.navigate('App');
+  }
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>hello auth</Text>
-        
-      </View>
-    )
+    if(this.state.loading){
+      return (
+        <View style={styles.loading}>
+          <ActivityIndicator />
+        </View>
+      )
+    }else {
+      return (
+        <ScrollView style={styles.container}>
+          <View>
+            <AuthLogo />
+            <AuthForm 
+              goNext={this.goNext}
+            />
+          </View>
+        </ScrollView>
+      )
+    }
+    
   }
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF'
+  container:{
+    flex:1,
+    backgroundColor:'#1d428a',
+    padding:50
+  },
+  loading:{
+    flex:1,
+    backgroundColor:'#fff',
+    alignItems:'center',
+    justifyContent:'center'
   }
 });
-
+ 
 //  
 export default AuthComponent;
