@@ -43,7 +43,7 @@ const validateMinLength = (value, ruleValue) => {
 }
 
 const validateConfirmPass = (password, confirmPassword) => {
-  return password === confirmPassword ? true : false;
+  return password === confirmPassword 
 }
 
 export default validation;
