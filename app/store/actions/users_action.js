@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { SIGN_UP, SIGN_IN } from '../types';
-import { SIGN_UP_URL, SIGN_IN_URL, FIREBASE_URL, REFRESH } from '../../utils/misc';
+import { SIGN_UP, SIGN_IN, AUTO_SIGN_IN } from '../types';
+import { SIGN_UP_URL, SIGN_IN_URL, FIREBASE_URL, REFRESH_URL } from '../../utils/misc';
 
 export const signUp = (data) => {
   const request = axios({
@@ -25,7 +25,6 @@ export const signUp = (data) => {
 }
 
 export const signIn = (data) => {
-  console.log(data);
   const request = axios({
     method: 'POST',
     url: SIGN_IN_URL,
@@ -38,15 +37,35 @@ export const signIn = (data) => {
       'Content-Type': 'application/json'
     }
   })
-  .then(res =>  {
-    console.log(res.data)
-    return res.data})
-  .catch(err => {
-    console.log(err)
-  })
+  .then(res => res.data)
+  .catch(err => false)
 
   return {
     type: SIGN_IN,
     payload: request
   }
+}
+
+export const autoSignIn = (refToken) => {
+    const request = axios({
+      method: 'POST',
+      url: REFRESH_URL,
+      data: "grant_type=refresh_token&refresh_token=" + refToken,
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(res => {
+      console.log(res);
+      return res.data
+    })
+    .catch(err => {
+      console.log(err);
+      return false
+    })
+
+    return {
+      type: AUTO_SIGN_IN,
+      payload: request
+    }
 }

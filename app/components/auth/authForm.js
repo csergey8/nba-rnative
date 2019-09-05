@@ -6,6 +6,7 @@ import Input from '../../utils/forms/input.js';
 import validation from '../../utils/forms/validation';
 import { signUp, signIn } from '../../store/actions/users_action.js';
 import { bindActionCreators } from 'redux';
+import { setTokens } from '../../utils/misc';
 
 
 
@@ -54,10 +55,7 @@ class AuthFormComponent extends Component {
 
     let rules = formCopy[name].rules;
     let valid = validation(value, rules, formCopy);
-    
-    console.log(valid);
     formCopy[name].valid = valid;
-
 
     this.setState({
       form: formCopy
@@ -122,9 +120,17 @@ class AuthFormComponent extends Component {
 
     if(isFormValid) {
       if(this.state.type === 'Login') {
-        this.props.signIn(formToSubmit);
+        this.props.signIn(formToSubmit).then(() => {
+          setTimeout(() => {
+            this.manageAccess();
+          }, 3000);
+        });
       } else {
-        this.props.signUp(formToSubmit);
+        this.props.signUp(formToSubmit).then(() => {
+          setTimeout(() => {
+            this.manageAccess();
+          }, 3000);
+        })
       }
     } else {
       this.setState({
@@ -132,6 +138,22 @@ class AuthFormComponent extends Component {
       })
     }
 
+  }
+
+  manageAccess = () => {
+     if(!this.props.User.auth.uid){
+        this.setState({
+          hasErrors: true
+        })
+      } else {
+        console.log('setToken handler');
+        setTokens(this.props.User.auth, () => {
+          this.setState({
+            hasErrors: false
+          })
+          this.props.goNext();
+        });
+     }
   }
   render() {
     return (
@@ -212,7 +234,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   console.log(state);
   return {
-    User: state.User
+    User: state.UserReducer
   }
 }
 
