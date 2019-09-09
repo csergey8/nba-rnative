@@ -10,10 +10,22 @@ import { createStackNavigator,
 import SignIn from './components/auth';
 import Games from './components/games';
 import News from './components/news';
+import Article from './components/news/article';
+import GamesArticle from './components/games/article';
+
+const NewsStack = createStackNavigator({
+  News: News,
+  Article: Article
+})
+
+const GamesStack = createStackNavigator({
+  Games: Games, 
+  Article: GamesArticle
+})
 
 const AppStack = createBottomTabNavigator({
-  News: News,
-  Games: Games
+  News: NewsStack,
+  Games: GamesStack
 });
 
 const AuthStack = createStackNavigator({
